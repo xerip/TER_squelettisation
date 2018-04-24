@@ -21,14 +21,14 @@ def out(image):
     
 out(image)
 
-
+"""
 image = io.imread("chevalnb.png")
 image = image.astype(int)
 print(len(image))
 print(len(image[1]))
 print(image[150,200])
 plt.imshow(image, cmap=plt.cm.gray)
-plt.show()
+plt.show()"""
 """
 print(type(image[0,0]))
 print(type(str(image[0,0])))
