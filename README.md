@@ -2,6 +2,6 @@
 
 1.0 => pixel_image.py | prio.py | projet.py | projet4d.py | cheval0.png | chevalnb.png
 
-2.0 => plot_min.py | projetsimple.py
+2.0 => plot_min.py | projetsimple.py | +projet4d.py+
 
-3.0 => conversion.py | index.png | zero.png
+3.0 => conversion.py | index.png | zero.png | +projetsimple.py+
