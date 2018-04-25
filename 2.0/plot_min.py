@@ -13,7 +13,6 @@ def matrice_f(fichier): #retourne une matrice selon le fichier donne
     m = np.zeros((Nbline,Nbcol))
     f.seek(0)
     i=0
-    f2=open('essai.txt','w')
     for line in f:
         j=0
         line = re.split(' ', line)      #on liste chaque ligne par rapport au separateur ' '

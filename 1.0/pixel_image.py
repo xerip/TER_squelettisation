@@ -12,7 +12,7 @@ def out(image):
     while i<len(image):
         j=0
         while j<len(image[1]):
-            f.write(str(image[i,j]) + " ")
+            f.write(str(image[i,j]).zfill(2) + " ")
             if j==len(image[1])-1 :
                 f.write("\n")
             j=j+1
