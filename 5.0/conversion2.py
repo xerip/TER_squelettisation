@@ -49,26 +49,6 @@ def out(image):
         i=i+1
     f.close()
 
-def nofloat_f(fichier): #retourne une matrice selon le fichier donne, a utiliser pour lire un fichier convertit.
-    Nbline = 0
-    f=open(fichier,'r+')
-    for line in f:
-        Nbline += 1
-    Nbcol = len(re.split(' ', line))-1
-    print ("Nombre de lignes : "+str(Nbline))
-    print ("Nombre de colonnes : "+str(Nbcol))
-    m = np.zeros((Nbline,Nbcol))
-    f.seek(0)
-    i=0
-    for line in f:
-        j=0
-        line = re.split(' ', line)      #on liste chaque ligne par rapport au separateur ' '
-        while j<len(line)-1:
-            m[i][j]=line[j]
-            j=j+1
-        i=i+1
-    f.close()
-    return m
     
 image = io.imread("mbapaint.png")
 image = convert_nb(image)

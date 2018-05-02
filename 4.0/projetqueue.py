@@ -122,7 +122,7 @@ def simplification(i,j,d,pic):  #determine si un point est simple ou terminal.
 
 image = io.imread("chevalnb.png")
 image = image.astype(int)
-#image = matrice_f("convert.txt")
+image = matrice_f("convert.txt")
 x=(len(image))
 y=(len(image[0]))
 print("Dimensions:",x,y)

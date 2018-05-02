@@ -1,15 +1,15 @@
 import re
 import numpy as np
 import matplotlib.pyplot as plt
+#from numba import jit
 
+#@jit(nopython=True, parallel=True)
 def matrice_f(fichier): #retourne une matrice selon le fichier donne
     Nbline = 0
     f=open(fichier,'r')
     for line in f:
         Nbline += 1
     Nbcol = len(re.split(' ', line))-1
-    print ("Nombre de lignes : "+str(Nbline))
-    print ("Nombre de colonnes : "+str(Nbcol))
     m = np.zeros((Nbline,Nbcol))
     f.seek(0)
     i=0
@@ -22,6 +22,7 @@ def matrice_f(fichier): #retourne une matrice selon le fichier donne
         i=i+1
     f.close()
     return m
+
 
 def matrice_min_int(m, n): #la matrice devient une matrice de 1 et de 0 selon un entier minimum
     i=0
@@ -37,9 +38,10 @@ def matrice_min_int(m, n): #la matrice devient une matrice de 1 et de 0 selon un
     return m
         
 m=matrice_f('convert.txt')
+#m=matrice_f('simpleout.txt')
 m=matrice_min_int(m, 1)
 
-plt.imshow(m, cmap=plt.cm.gray)
+plt.imshow(m)
 plt.show()
 
 
