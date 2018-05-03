@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import re
 from collections import deque
-from numba import jit
+
 
 
 #X/I=LIGNES  = 328
@@ -17,7 +17,6 @@ from numba import jit
 #Evidemment tout est loin d'etre optimise.
 #Utilisez le fichier "plot_min.py" pour afficher le resultat.
 
-@jit
 def out(image): #convertit le resultat final dans un fichier.
     i=0
     f=open('simpleout.txt','w')
@@ -52,7 +51,6 @@ def matrice_f(fichier): #retourne une matrice selon le fichier donne, a utiliser
     f.close()
     return m
 
-@jit
 def simplification(i,j,d,pic):  #determine si un point est simple ou terminal.
 	if (d=='N'):
 		p=pic[i][j-1] + pic[i][j+1] + pic[i+1][j]
@@ -138,111 +136,108 @@ simple=[]
 
 front=deque()
 #Calcul de profondeur par chaque extremite.
-@jit
-def prior():
-    for i in range (1,x-1):
-        for j in range (1,y-1):
-            #bas droite
-            if (image[i][j]==1 and (priobd[i-1][j]==0 or priobd[i][j-1]==0)):
-                priobd[i][j]=1
-            elif (image[i][j]==1 and (priobd[i-1][j]>0 and priobd[i][j-1]>0)):
-                priobd[i][j]=min(priobd[i-1][j],priobd[i][j-1])+1
-            #haut droite
-            if (image[x-i][j]==1 and (priohd[x-i+1][j]==0 or priohd[x-i][j-1]==0)):
-                priohd[x-i][j]=1
-            elif (image[x-i][j]==1 and (priohd[x-i+1][j]>0 and priohd[x-i][j-1]>0)):
-                priohd[x-i][j]=min(priohd[x-i+1][j],priohd[x-i][j-1])+1
-            #bas gauche
-            if (image[i][y-j]==1 and (priobg[i-1][y-j]==0 or priobg[i][y-j+1]==0)):
-                priobg[i][y-j]=1
-            elif (image[i][y-j]==1 and (priobg[i-1][y-j]>0 and priobg[i][y-j+1]>0)):
-                priobg[i][y-j]=min(priobg[i-1][y-j],priobg[i][y-j+1])+1
-            #haut gauche
-            if (image[x-i][y-j]==1 and (priohg[x-i+1][y-j]==0 or priohg[x-i][y-j+1]==0)):
-                priohg[x-i][y-j]=1
-            elif (image[x-i][y-j]==1 and (priohg[x-i+1][y-j]>0 and priohg[x-i][y-j+1]>0)):
-                priohg[x-i][y-j]=min(priohg[x-i+1][y-j],priohg[x-i][y-j+1])+1
+for i in range (1,x-1):
+	for j in range (1,y-1):
+		#bas droite
+		if (image[i][j]==1 and (priobd[i-1][j]==0 or priobd[i][j-1]==0)):
+			priobd[i][j]=1
+		elif (image[i][j]==1 and (priobd[i-1][j]>0 and priobd[i][j-1]>0)):
+			priobd[i][j]=min(priobd[i-1][j],priobd[i][j-1])+1
+		#haut droite
+		if (image[x-i][j]==1 and (priohd[x-i+1][j]==0 or priohd[x-i][j-1]==0)):
+			priohd[x-i][j]=1
+		elif (image[x-i][j]==1 and (priohd[x-i+1][j]>0 and priohd[x-i][j-1]>0)):
+			priohd[x-i][j]=min(priohd[x-i+1][j],priohd[x-i][j-1])+1
+		#bas gauche
+		if (image[i][y-j]==1 and (priobg[i-1][y-j]==0 or priobg[i][y-j+1]==0)):
+			priobg[i][y-j]=1
+		elif (image[i][y-j]==1 and (priobg[i-1][y-j]>0 and priobg[i][y-j+1]>0)):
+			priobg[i][y-j]=min(priobg[i-1][y-j],priobg[i][y-j+1])+1
+		#haut gauche
+		if (image[x-i][y-j]==1 and (priohg[x-i+1][y-j]==0 or priohg[x-i][y-j+1]==0)):
+			priohg[x-i][y-j]=1
+		elif (image[x-i][y-j]==1 and (priohg[x-i+1][y-j]>0 and priohg[x-i][y-j+1]>0)):
+			priohg[x-i][y-j]=min(priohg[x-i+1][y-j],priohg[x-i][y-j+1])+1
 
-    for i in range (0,x):
-        for j in range (0,y):
-            prio[i][j]=min(priohg[i][j],priobg[i][j],priohd[i][j],priobd[i][j])
+for i in range (0,x):
+	for j in range (0,y):
+		prio[i][j]=min(priohg[i][j],priobg[i][j],priohd[i][j],priobd[i][j])
 
-    priomax=prio.max()
-    #print(priomax)
-    megaliste=[]
-    frontN=[]
-    frontE=[]
-    frontS=[]
-    frontO=[]
-    front=[]
-    listecompteur=np.zeros(priomax+1,dtype=int)
-    #squelettisation, par priorite.
-    #Par ordre N E S O, determine les forntiere puis les supprime en fin de passe.
+priomax=prio.max()
+print(priomax)
+megaliste=[]
+frontN=[]
+frontE=[]
+frontS=[]
+frontO=[]
+front=[]
+listecompteur=np.zeros(priomax+1,dtype=int)
+#squelettisation, par priorite.
+#Par ordre N E S O, determine les forntiere puis les supprime en fin de passe.
 
-    for i in range(1,x-1):
-        for j in range (1,y-1):
-            if(prio[i][j]>0):
-                listecompteur[prio[i][j]]=listecompteur[prio[i][j]]+1
-                pos=0
-                for g in range(1,prio[i][j]):
-                    pos=pos+listecompteur[g]
-                megaliste.insert(pos,(i,j))
-        
-    megaliste.reverse()
-    #print(len(megaliste))
-    for pr in range (1,priomax):
-        for g in range(0,listecompteur[pr]-1):
-            p=megaliste.pop()
-            if image[p[0]-1][p[1]]==0:
-                    frontN.extend((p[0],p[1]))
-            if image[p[0]][p[1]+1]==0:
-                    frontE.extend((p[0],p[1]))
-            if image[p[0]+1][p[1]]==0:
-                    frontS.extend((p[0],p[1]))
-            if image[p[0]][p[1]-1]==0:
-                    frontO.extend((p[0],p[1]))
-        frontN.reverse()
-        frontE.reverse()
-        frontS.reverse()
-        frontO.reverse()
-        for g in range(0,len(frontN)/2):
-            p=frontN.pop()
-            q=frontN.pop()
-            if image[p][q]==1:
-                if simplification(p,q,"N",image):
-                    front.extend((p,q))
-        front.reverse()
-        for g in range(0,len(front)/2):
-            image[front.pop()][front.pop()]=0
-        for g in range(0,len(frontE)/2):
-            p=frontE.pop()
-            q=frontE.pop()
-            if image[p][q]==1:
-                if simplification(p,q,"E",image):
-                    front.extend((p,q))
-        front.reverse()
-        for g in range(0,len(front)/2):
-            image[front.pop()][front.pop()]=0
+for i in range(1,x-1):
+	for j in range (1,y-1):
+		if(prio[i][j]>0):
+			listecompteur[prio[i][j]]=listecompteur[prio[i][j]]+1
+			pos=0
+			for g in range(1,prio[i][j]):
+				pos=pos+listecompteur[g]
+			megaliste.insert(pos,(i,j))
+	
+megaliste.reverse()
+print(len(megaliste))
+for pr in range (1,priomax):
+	for g in range(0,listecompteur[pr]-1):
+		p=megaliste.pop()
+		if image[p[0]-1][p[1]]==0:
+				frontN.extend((p[0],p[1]))
+		if image[p[0]][p[1]+1]==0:
+				frontE.extend((p[0],p[1]))
+		if image[p[0]+1][p[1]]==0:
+				frontS.extend((p[0],p[1]))
+		if image[p[0]][p[1]-1]==0:
+				frontO.extend((p[0],p[1]))
+	frontN.reverse()
+	frontE.reverse()
+	frontS.reverse()
+	frontO.reverse()
+	for g in range(0,len(frontN)/2):
+		p=frontN.pop()
+		q=frontN.pop()
+		if image[p][q]==1:
+			if simplification(p,q,"N",image):
+				front.extend((p,q))
+	front.reverse()
+	for g in range(0,len(front)/2):
+		image[front.pop()][front.pop()]=0
+	for g in range(0,len(frontE)/2):
+		p=frontE.pop()
+		q=frontE.pop()
+		if image[p][q]==1:
+			if simplification(p,q,"E",image):
+				front.extend((p,q))
+	front.reverse()
+	for g in range(0,len(front)/2):
+		image[front.pop()][front.pop()]=0
 
-        for g in range(0,len(frontS)/2):
-            p=frontS.pop()
-            q=frontS.pop()
-            if image[p][q]==1:
-                if simplification(p,q,"S",image):
-                    front.extend((p,q))
-        front.reverse()
-        for g in range(0,len(front)/2):
-            image[front.pop()][front.pop()]=0
-        for g in range(0,len(frontO)/2):
-            p=frontO.pop()
-            q=frontO.pop()
-            if image[p][q]==1:
-                if simplification(p,q,"O",image):
-                    front.extend((p,q))
-        front.reverse()
-        for g in range(0,len(front)/2):
-            image[front.pop()][front.pop()]=0
+	for g in range(0,len(frontS)/2):
+		p=frontS.pop()
+		q=frontS.pop()
+		if image[p][q]==1:
+			if simplification(p,q,"S",image):
+				front.extend((p,q))
+	front.reverse()
+	for g in range(0,len(front)/2):
+		image[front.pop()][front.pop()]=0
+	for g in range(0,len(frontO)/2):
+		p=frontO.pop()
+		q=frontO.pop()
+		if image[p][q]==1:
+			if simplification(p,q,"O",image):
+				front.extend((p,q))
+	front.reverse()
+	for g in range(0,len(front)/2):
+		image[front.pop()][front.pop()]=0
 
-prior()
 out(image)
 
