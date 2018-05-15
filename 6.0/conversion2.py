@@ -96,7 +96,7 @@ ax = axes.ravel()
 
 
 
-image = io.imread("mba.pgm")
+image = io.imread("cup01.pgm")
 #print(len(image[0][0]))
 
 ax[0].imshow(image, cmap=plt.cm.gray)
