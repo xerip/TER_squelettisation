@@ -11,7 +11,7 @@ def convert_nb(image, inversion):
         j=0
         while j<len(image[i]):
             k=0
-            if (!inversion):
+            if (inversion==0):
                 try:
                     n=len(image[i,j])
                     if len(image[i,j])==3: #image rgb normal
@@ -96,7 +96,7 @@ ax = axes.ravel()
 
 
 
-image = io.imread("chevalnb.png")
+image = io.imread("mba.pgm")
 #print(len(image[0][0]))
 
 ax[0].imshow(image, cmap=plt.cm.gray)
@@ -104,7 +104,7 @@ ax[0].axis('off')
 ax[0].set_title('original', fontsize=20)
 
 
-image = convert_nb(image)
+image = convert_nb(image, 0)
 ax[1].imshow(image, cmap=plt.cm.gray)
 ax[1].axis('off')
 ax[1].set_title('n&b', fontsize=20)
