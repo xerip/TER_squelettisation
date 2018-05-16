@@ -10,4 +10,6 @@
 
 5.0 => +conversion.py+ | mba.png | mbapaint.png | 1.jpg | conversion2.py
 
-6.0 => test_numba.py
+6.0 => test_numba.py | test_options
+
+7.0 => conversion2.py plus rapide | projetqueue8d.py | images pgm

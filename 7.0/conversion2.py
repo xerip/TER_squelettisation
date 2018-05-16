@@ -127,7 +127,7 @@ ax = axes.ravel()
 
 
 
-image = io.imread("mba.png")
+image = io.imread("chevalnb.png")
 #print(len(image[0][0]))
 
 ax[0].imshow(image, cmap=plt.cm.gray)
