@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 def out(image): #convertit le resultat final dans un fichier.
     i=0
-    f=open('simpleout.txt','w')
+    f=open('simpleout   .txt','w')
     while i<len(image):
         j=0
         while j<len(image[0]):
