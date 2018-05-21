@@ -5,6 +5,7 @@ import re
 import sys
 from collections import deque
 import timeit
+from copy import copy
 
 
 #X/I=LIGNES  = 328
@@ -244,7 +245,7 @@ def simplification8d(i,j,d,pic):  #determine si un point est simple ou terminal.
 			return 1
 		elif (p+t+b<=1):
 			return 0
-		elif (p==1):
+		elif 	(p==1):
 			if (b>1 and t>1):
 				return 0
 			elif (E==1):
@@ -369,6 +370,16 @@ if (len(sys.argv)==5):
 	if (args[4]=="-inv"):
 		inv=1
 image = convert_nb(image,inv)
+orig=copy(image)
+
+fig,axes = plt.subplots(nrows=1, ncols=2, figsize=(8, 4),
+                         sharex=True, sharey=True)
+ax = axes.ravel()        
+
+ax[0].imshow(orig, cmap=plt.cm.gray)
+ax[0].axis('off')
+ax[0].set_title('original', fontsize=20)
+
 print("Image definie")
 x=(len(image))
 y=(len(image[0]))
@@ -437,14 +448,21 @@ for i in range(1,x-1):
 			for g in range(1,prio[i][j]):
 				pos=pos+listecompteur[g]
 			megaliste.insert(pos,(i,j))
-	
+
+if(args[3]=="-p"):
+	ax[1].imshow(prio)
+	ax[1].axis('off')
+	ax[1].set_title('profondeur', fontsize=20)
+	plt.show()
+	sys.exit()
+
 megaliste.reverse()
 print(len(megaliste))
 if (args[2]=="-4d"):
 	simplification=simplification4d
 else:
 	simplification=simplification8d
-for pr in range (1,priomax):
+for pr in range (1,priomax+1):
 	for g in range(0,listecompteur[pr]):
 		p=megaliste.pop()
 		if image[p[0]-1][p[1]]==0:
@@ -492,6 +510,12 @@ for pr in range (1,priomax):
 	for g in range(0,len(front)/2):
 		image[front.popleft()][front.popleft()]=0
 
+
+
+
+
+
+
 if (args[3]=="-ps"):
 	for i in range(0,x):
 		for j in range(0,y):
@@ -499,12 +523,11 @@ if (args[3]=="-ps"):
 				image[i][j]=prio[i][j]
 	out(image)
 
-if(args[3]=="-p"):
-	plt.imshow(prio)
-	plt.show()
-else:
-	plt.imshow(image,cmap=plt.cm.gray)
-	plt.show()
+
+ax[1].imshow(image, cmap=plt.cm.gray)
+ax[1].axis('off')
+ax[1].set_title('squelette', fontsize=20)
+plt.show()
 
 
 

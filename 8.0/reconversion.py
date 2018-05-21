@@ -59,29 +59,31 @@ for i in range (1,x):
                 p=int(image[i][j])
                 for k in range(0,p):
                     for l in range(0,p-k	):
-                        res[i-k][j-l]=1
-                        res[i-k][j+l]=1
-                        res[i+k][j-l]=1
-                        res[i+k][j+l]=1 
+                        res[i-k][j-l]=2
+                        res[i-k][j+l]=2
+                        res[i+k][j-l]=2
+                        res[i+k][j+l]=2
                 if(len(args)>1):
-                    if(args[1]=='-c'):
+                    if(args[1]>0):
                         if ((bool(image[i-1][j]) +bool(image[i+1][j]) + bool(image[i][j-1]) + bool(image[i][j+1]) + bool(image[i+1][j+1]) + bool(image[i+1][j-1]) +bool(image[i-1][j+1]) + bool(image[i-1][j-1]))==1):
                             if image[i][j]>1:				
                                 for k in range(0,p):
                                     l=0
-                                    while(sqrt((pow(k,2)+pow(l,2)))<sqrt(pow(p,2)) and l < p):					
-                                        res[i-k][j-l]=1
-                                        res[i-k][j+l]=1
-                                        res[i+k][j-l]=1
-                                        res[i+k][j+l]=1
+                                    while(sqrt((pow(k+int(args[1]),2)+pow(l+int(args[1]),2)))<sqrt(pow(p,2))):					
+                                        res[i-k][j-l]=2
+                                        res[i-k][j+l]=2
+                                        res[i+k][j-l]=2
+                                        res[i+k][j+l]=2
                                         l=l+1
+
+
 
 if (len(args)>2):
     if (args[2]=='-s'):
         for i in range (1,x):
             for j in range (1,y):
                 if image[i][j]>0:
-                    res[i][j]=2
+                    res[i][j]=1
 
 
 
