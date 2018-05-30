@@ -68,7 +68,7 @@ for i in range (1,x):
                	            if image[i][j]>1:				
                                 for k in range(0,p):
                                     l=0
-                                    while(sqrt((pow(k,2)+pow(l+int(args[2]),2)))<sqrt(pow(p,2))-int(args[2])):					
+                                    while(sqrt((pow(k,2)+pow(l,2)))<sqrt(pow(p,2))-int(args[2])):					
                                         res[i-k][j-l]=2
                                         res[i-k][j+l]=2
                                         res[i+k][j-l]=2
