@@ -13,3 +13,5 @@
 6.0 => test_numba.py | test_options
 
 7.0 => conversion2.py plus rapide | projetqueue8d.py | images pgm
+
+8.0 -> 10.0 => final + diapo + rapport
